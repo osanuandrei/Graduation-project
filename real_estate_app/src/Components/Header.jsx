@@ -17,7 +17,7 @@ export default function Header() {
     <span className='text-orange-500'>Cluj</span>
     <span className='text-blue-500'>HomeFinder.ro</span>
   </h2>
-        </div>
+        </div> 
         <div>
             <ul className='flex space-x-10 text-lg'> 
                 <li className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-[3px] border-b-transparent ${matchRoute('/') && "text-black border-b-red-500"} ` } onClick={() => navigate('/')}>Home</li>
