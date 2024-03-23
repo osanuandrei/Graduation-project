@@ -3,13 +3,41 @@ import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Auth from "../Components/Auth";
+import { db } from "../firebase";
+import { getAuth, createUserWithEmailAndPassword, updateProfile} from "firebase/auth";
+import { serverTimestamp, setDoc, doc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 const SignUp = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  function onChange(e) {
-    setFormData((prevState) => ({
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false); // created the state mgm for the eye button 
+  function onChange(e) { // with onChange we are managing states for every input ( name , email , password ) and we wanna create CONTROLLED INPUTS
+    setFormData((prevState) => ({ 
       ...prevState,
       [e.target.id]: e.target.value,
     }));
+  }
+  
+  async function onSubmit(e) { // auths the user using methods from firebase/auth 
+    e.preventDefault(); 
+    try {
+      const auth = getAuth();
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      updateProfile(auth.currentUser, {
+        displayName: name
+      })
+      const user = userCredential.user;
+      const formDataCopy = { ...formData };
+      delete formDataCopy.password; // deletes the password in the db for security 
+      formDataCopy.timestamp = serverTimestamp(); //know the time the user created the account
+      await setDoc(doc(db, "users", user.uid), formDataCopy) 
+      // we created the collection users, using setDoc we introduce to DB the formdataCopy(name,email and timestamp because we removed the password)
+      toast.success("Signed up successfully ")
+      navigate("/");
+      
+    } catch (error) {
+      toast.error("User not registered , something went wrong")
+    }
   }
   const [formData, setFormData] = useState({
     email: "",
@@ -28,14 +56,14 @@ const SignUp = () => {
           ></img>
         </div>
         <div className="w-full md:w-[65%] lg:w-[38%] lg:ml-16">
-          <form>
+          <form onSubmit={ onSubmit }>
           <input
               className="w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out mb-6"
               type="text"
               id="name"
               value={name}
               onChange={onChange}
-              placeholder="Full Name"
+              placeholder="Your name"
             ></input>
             <input
               className="w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out mb-6"
@@ -43,7 +71,7 @@ const SignUp = () => {
               id="email"
               value={email}
               onChange={onChange}
-              placeholder="Email adress"
+              placeholder="Email"
             ></input>
             <div className="relative mb-6">
               <input
