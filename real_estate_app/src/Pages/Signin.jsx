@@ -3,7 +3,11 @@ import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Auth from "../Components/Auth";
+import { signInWithEmailAndPassword,  getAuth } from "firebase/auth";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 const Signin = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   function onChange(e) {
     setFormData((prevState) => ({
@@ -16,7 +20,24 @@ const Signin = () => {
     password: "",
   });
   const { email, password } = formData;
+  async function onSubmit(e) {
+        
+   try {
+    e.preventDefault()
+    const auth = getAuth();
+    const userCredentials = await signInWithEmailAndPassword(auth, email, password);
+    const result = userCredentials.user;
+    if (userCredentials.user) {
+      // Assuming you have a function to retrieve additional user data by user ID
+      navigate("/");
+      toast.success(`Welcome , ${result.displayName} !`);
+    }
+   } catch (error) {
+    toast.error("Bad user credentials");
+   }
+  }
   return (
+    
     <section>
       <h1 className="text-3xl text-center mt-6 font-bold">Sign in</h1>
       <div className="flex justify-center flex-wrap items-center px-6 py-12 max-w-6xl mx-auto">
@@ -28,7 +49,7 @@ const Signin = () => {
           ></img>
         </div>
         <div className="w-full md:w-[65%] lg:w-[38%] lg:ml-16">
-          <form>
+          <form onSubmit={onSubmit}>
             <input
               className="w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out mb-6"
               type="email"
@@ -93,5 +114,6 @@ const Signin = () => {
     </section>
   );
 };
+
 
 export default Signin;

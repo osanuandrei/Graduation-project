@@ -3,12 +3,23 @@ import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Auth from "../Components/Auth";
+import { toast } from "react-toastify";
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   function onChange(e) {
     setEmail(e.target.value)
     };
-  
+  async function onSubmit(e) {
+    try {
+      e.preventDefault();
+      const auth = getAuth();
+      await sendPasswordResetEmail(auth,email);
+      toast.success("Email sent!")
+    } catch (error) {
+      toast.error("Couldn't reset password")
+    }
+  }
   
   
   return (
@@ -23,7 +34,7 @@ const ForgotPassword = () => {
           ></img>
         </div>
         <div className="w-full md:w-[65%] lg:w-[38%] lg:ml-16">
-          <form>
+          <form onSubmit={onSubmit}>
             <input
               className="w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out mb-6"
               type="email"
