@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { FaEyeSlash } from "react-icons/fa";
-import { FaEye } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Auth from "../Components/Auth";
 import { toast } from "react-toastify";
@@ -14,7 +12,7 @@ const ForgotPassword = () => {
     try {
       e.preventDefault();
       const auth = getAuth();
-      await sendPasswordResetEmail(auth,email);
+      await sendPasswordResetEmail(auth,email); // built in email send by firebase
       toast.success("Email sent!")
     } catch (error) {
       toast.error("Couldn't reset password")

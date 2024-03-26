@@ -25,10 +25,9 @@ const Signin = () => {
    try {
     e.preventDefault()
     const auth = getAuth();
-    const userCredentials = await signInWithEmailAndPassword(auth, email, password);
-    const result = userCredentials.user;
+    const userCredentials = await signInWithEmailAndPassword(auth, email, password); // built in function to Sign In from firebase
+    const result = userCredentials.user; // get user info to display it in toast success
     if (userCredentials.user) {
-      // Assuming you have a function to retrieve additional user data by user ID
       navigate("/");
       toast.success(`Welcome , ${result.displayName} !`);
     }
