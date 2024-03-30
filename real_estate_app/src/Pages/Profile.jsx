@@ -1,12 +1,30 @@
 import React, { useState } from 'react'
 import { getAuth } from 'firebase/auth'
+import { useNavigate } from 'react-router';
+import { useEffect } from 'react';
 const Profile = () => {
+  const navigate = useNavigate();
   const auth = getAuth();
   const [formData, setFormData] = useState({
-    name: auth.currentUser.name,
-    email: auth.currentUser.email, // wtf error?? cannot read properties of null , have to render the page before getting info from server
-  })
+    name: '',
+    email: ''
+  });
+
+  useEffect(() => {
+    // Fetch user information after component mounts
+    if (auth.currentUser) {
+      setFormData({
+        name: auth.currentUser.displayName || '', // Use displayName instead of name
+        email: auth.currentUser.email || ''
+      });
+    }
+  }, [auth.currentUser]);
+  
   const {name, email } = formData // destructure
+  function onLogout () { // logout functionality
+    auth.signOut();
+    navigate("/");
+  }
   return (
     <> 
       <section className='max-w-6xl mx-auto flex justify-center items-center flex-col'>  
@@ -25,7 +43,7 @@ const Profile = () => {
                   Edit
                 </span>
               </p>
-              <p className='text-gray-600 hover:text-black transition duration-200 ease-in-out cursor-pointer'>
+              <p onClick = {onLogout}className='text-gray-600 hover:text-black transition duration-200 ease-in-out cursor-pointer'>
                 Sign Out
               </p>
             </div>
