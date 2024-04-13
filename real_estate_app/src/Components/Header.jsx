@@ -6,51 +6,44 @@ export default function Header() {
     const location = useLocation();
     const navigate = useNavigate();
     const auth = getAuth();
-    const [pageState,setPageState] = useState('Sign in'); // default page , like we just entered, we will have Sign In top right
-    useEffect(()=> {
-        onAuthStateChanged(auth, (user)=> { // if user is authenticated , setpagestate to 'Profile' otherwise set it to default (Sign in)
-            if(user) {
-                setPageState('Profile');
-            }
-            else{
-                setPageState('Sign in');
+    const [pageState, setPageState] = useState('Sign in'); // default page, like we just entered, we will have Sign In top right
+
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => { // if user is authenticated, set page state to 'Profile'; otherwise set it to default (Sign in)
+            if (user) {
+                setPageState('Profil');
+            } else {
+                setPageState('Log in');
             }
         })
-    }, [auth]
-    )
-    
+    }, [auth]);
+
     console.log("Current Path:", location.pathname); // Log current pathname
 
     function matchRoute(route) {
-        if(route === location.pathname){
-            return true;
-        };
+        return route === location.pathname;
     }
 
     return (
-        <div className='bg-white border-b shadow-sm sticky top-0 z-55'> 
-            <header className='flex justify-between items-center px-3 max-w-6xl mx-auto'>
-                <div className='flex items-center'>
-                    <img src='favicon.ico' alt='logo' className='h-6 cursor-pointer' onClick={() => navigate('/')} />
+        <header className="bg-gray-900 text-white shadow-md">
+            <div className="container mx-auto flex justify-between items-center py-4 px-6">
+                <div className="flex items-center">
+                    <img src='favicon.ico' alt='logo' className='h-8 cursor-pointer' onClick={() => navigate('/')} />
                     <h2 className='ml-2 text-lg'>
                         <span className='text-orange-500'>Cluj</span>
                         <span className='text-blue-500'>HomeFinder.ro</span>
                     </h2>
-                </div> 
-                <div>
-                <ul className='flex space-x-10 text-lg'>  
-                        <li className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-[3px]  
-                        ${matchRoute("/") && "text-black border-b-red-500"}`} onClick={() => navigate('/')}>Home</li>
-                        <li className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-[3px]  
-                        ${matchRoute("/offers") && "text-black border-b-red-500"} `} onClick={() => navigate('/offers')}>Offers</li>
-                        <li className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-[3px] 
-                         ${(matchRoute("/sign-in") || matchRoute("/profile")) && "text-black border-b-red-500"}`} onClick={() => navigate('/profile')}> 
-                            {pageState}
-                            </li>
-                    </ul>
                 </div>
-            </header>
-            
-        </div>
+                <nav className="flex items-center">
+                    <ul className="flex space-x-6 text-sm">
+                        <li className={`cursor-pointer font-semibold ${matchRoute("/") ? 'text-red-500' : 'text-gray-300 hover:text-white'}`} onClick={() => navigate('/')}>Home</li>
+                        <li className={`cursor-pointer font-semibold ${matchRoute("/offers") ? 'text-red-500' : 'text-gray-300 hover:text-white'}`} onClick={() => navigate('/offers')}>Oferte</li>
+                        <li className={`cursor-pointer font-semibold ${matchRoute("/sign-in") || matchRoute("/profile") ? 'text-red-500' : 'text-gray-300 hover:text-white'}`} onClick={() => navigate('/profile')}>
+                            {pageState}
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
     );
 }

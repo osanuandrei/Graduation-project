@@ -9,6 +9,9 @@ import PRoute from "./Components/PRoute";
 import Header from "./Components/Header";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Listing from "./Pages/Listing";
+import EditListing from "./Pages/EditListing"
+import ListingDetails from "./Pages/ListingDetails";
 function App() {
   return (
     <div className="App">
@@ -27,6 +30,13 @@ function App() {
           <Route path="/sign-up" element={<SignUp/>}></Route>
           <Route path="/forgot-password" element={<ForgotPassword/>}></Route>
           <Route path="/offers" element={<Offers/>}></Route>
+          <Route path='/create-listing' element={<PRoute></PRoute>}>
+          <Route path="/create-listing" element={<Listing></Listing>}/>
+          </Route>
+          <Route path='/edit-listing' element={<PRoute></PRoute>}>
+          <Route path="/edit-listing/:listingId" element={<EditListing/>}/>
+          </Route>
+          <Route path="/category/:categoryName/:listingId" element={<ListingDetails/>}/>
         </Routes>
       </Router>
       <ToastContainer

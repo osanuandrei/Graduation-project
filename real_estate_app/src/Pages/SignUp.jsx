@@ -96,12 +96,12 @@ const SignUp = () => {
             </div>
             <div className="flex justify-between whitespace-nowrap text-sm">
               <p className="mb-6  ">
-                Have an account?
+                Ai deja cont?
                 <Link
                   to="/sign-in"
                   className="text-red-600 hover:text-red-800 transition-duration-200 ease-in-out ml-1"
                 >
-                  Sign in now
+                  Logheaza-te acum!
                 </Link>
               </p>
               <p>
@@ -109,7 +109,7 @@ const SignUp = () => {
                   to="/forgot-password"
                   className="text-blue-500 hover:text-blue-700 transition-duration-200 ease-in-out ml-1"
                 >
-                  Forgot password?
+                  Ai uitat parola?
                 </Link>
               </p>
             </div>
@@ -117,7 +117,7 @@ const SignUp = () => {
               className=" w-full bg-blue-500 text-white px-7 py-3 text-sm font-medium uppercase rounded shadow-md hover:bg-blue-700 transition duration-150 ease-out hover:shadow-lg active:bg-blue-800"
               type="submit"
             >
-              Sign Up
+              Logheaza-te
             </button>
             <div className="flex my-4 before:border-t before:flex-1 before:border-gray-400 items-center after:border-t after:flex-1 after:border-gray-400">
               <p className="text-center font-semibold mx-4">OR</p>
