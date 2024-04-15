@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Slider from "../Components/Slider";
 import { collection, getDocs, limit, orderBy, query, where } from "firebase/firestore";
 import { db } from "../firebase";
-import Spinner from "../Components/Spinner";
 import { Link } from "react-router-dom";
 import ListingItems from "../Components/ListingItems";
 
@@ -16,7 +15,7 @@ const Home = () => {
           ///get reference
           const listRef = collection(db, "listings")
           //fa query sa iei datele din firebase
-          const q = query(listRef, where("oferta", "==" , true),orderBy("timestamp", "desc"), limit(4));
+          const q = query(listRef, where("oferta", "==" , true),orderBy("timestamp", "desc"), limit(3));
           // 
           const querySnap = await getDocs(q);
           const listings = [];
@@ -48,7 +47,7 @@ const Home = () => {
           listingsRef,
           where("type", "==", "rent"),
           orderBy("timestamp", "desc"),
-          limit(4)
+          limit(3)
         );
         // execute the query
         const querySnap = await getDocs(q);
@@ -78,7 +77,7 @@ const Home = () => {
           listingsRef,
           where("type", "==", "sale"),
           orderBy("timestamp", "desc"),
-          limit(4)
+          limit(3)
         );
         // execute the query
         const querySnap = await getDocs(q);
@@ -123,7 +122,7 @@ const Home = () => {
             </h2>
             <Link to="/category/rent">
               <p className="px-3 text-sm text-blue-600 hover:text-blue-800 transition duration-150 ease-in-out">
-                
+                Mai multe proprietati de inchiriat
               </p>
             </Link>
             <ul className="sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">

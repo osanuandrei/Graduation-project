@@ -204,7 +204,7 @@ export default function Listing() {
                 : "bg-slate-600 text-white"
             }`}
           >
-            rent
+            Chirie
           </button>
         </div>
         <p className="text-lg mt-6 font-semibold">Titlu</p>

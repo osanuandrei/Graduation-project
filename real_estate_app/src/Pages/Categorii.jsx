@@ -12,8 +12,10 @@ import {
 import { db } from "../firebase";
 import Spinner from "../Components/Spinner";
 import ListingItems from "../Components/ListingItems";
+import { useParams } from "react-router";
 
-export default function Offers() {
+export default function Categorii() {
+    const params = useParams();
   const [listings, setListings] = useState(null);
   const [loading, setLoading] = useState(true);
   const [lastFetchedListing, setLastFetchListing] = useState(null);
@@ -23,7 +25,7 @@ export default function Offers() {
         const listingRef = collection(db, "listings");
         const q = query(
           listingRef,
-          where("oferta", "==", true),
+          where("type", "==", params.categoryName),
           orderBy("timestamp", "desc"),
           limit(8)
         );
@@ -45,14 +47,14 @@ export default function Offers() {
     }
 
     fetchListings();
-  }, []);
+  }, [params.categoryName]);
 
   async function onFetchMoreListings() {
     try {
       const listingRef = collection(db, "listings");
       const q = query(
         listingRef,
-        where("oferta", "==", true),
+        where("type", "==", params.categoryName),
         orderBy("timestamp", "desc"),
         startAfter(lastFetchedListing),
         limit(4)
@@ -76,7 +78,9 @@ export default function Offers() {
 
   return (
     <div className="max-w-6xl mx-auto px-3">
-      <h1 className="text-3xl text-center mt-6 font-bold mb-6">Oferte</h1>
+      <h1 className="text-3xl text-center mt-6 font-bold mb-6">
+        {params.categoryName === "rent" ? "Proprietati de inchiriat" : "Proprietati de vanzare"}
+      </h1>
       {loading ? (
         <Spinner />
       ) : listings && listings.length > 0 ? (

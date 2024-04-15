@@ -12,6 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Listing from "./Pages/Listing";
 import EditListing from "./Pages/EditListing"
 import ListingDetails from "./Pages/ListingDetails";
+import Categorii from "./Pages/Categorii";
 function App() {
   return (
     <div className="App">
@@ -30,6 +31,7 @@ function App() {
           <Route path="/sign-up" element={<SignUp/>}></Route>
           <Route path="/forgot-password" element={<ForgotPassword/>}></Route>
           <Route path="/offers" element={<Offers/>}></Route>
+          <Route path="/category/:categoryName" element={<Categorii/>}></Route>
           <Route path='/create-listing' element={<PRoute></PRoute>}>
           <Route path="/create-listing" element={<Listing></Listing>}/>
           </Route>
