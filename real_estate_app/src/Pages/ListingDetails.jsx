@@ -29,6 +29,7 @@ export default function ListingDetails() {
     const params = useParams();
     const [listing, setListing]= useState(null);
     const [loading, setLoading]= useState(true);
+    const [modalImage, setModalImage] = useState(null);
     const [shareLinkCopy, setShareLinkCopy] = useState(false)
     const [contactProprietar, setContactProprietar] = useState(false)
     useEffect(() => {
@@ -46,24 +47,61 @@ export default function ListingDetails() {
     if(loading) {
         return <Spinner/>
     }
+
+    const ListingDetails = ({ listing }) => {
+        const images = listing.imgUrls.map((url, index) => ({
+          original: url,
+          thumbnail: url, // Poți folosi aceeași imagine pentru thumbnail sau să specifici altă imagine
+          thumbnailClass: 'thumbnail', // Adaugă o clasă CSS pentru a stiliza thumbnail-ul
+        }));
+    }
+
+    
+
+  const images = listing.imgUrls.map((url, index) => ({
+    original: url,
+    thumbnail: url,
+  }));
+
+  const openModal = (imageUrl) => {
+    setModalImage(imageUrl);
+  };
+
+  const closeModal = () => {
+    setModalImage(null);
+  };
+      
   return (
+    
     <main>
-      <Swiper slidesPerView={1} navigation pagination={{type: "progressbar"}} 
-      effect='fade' modules={{EffectFade}} autoplay="300ms">
-
+       <Swiper
+        slidesPerView={1}
+        navigation
+        pagination={{ type: 'progressbar' }}
+        effect='fade'
+        autoplay="300ms"
+        style={{ height: "300px", width: "60%", overflowX: "scroll", marginBottom: "20px" }}
+      >
         {listing.imgUrls.map((url, index) => (
-            <SwiperSlide key={index}>
-                <div className=' relative w-full overflow-hidden h-[300px]' 
-                style={{background: `url(${listing.imgUrls[index]}) center no-repeat`, backgroundSize: "cover "} }
-               
-                >
-
-                </div>
-
-            </SwiperSlide>
+          <SwiperSlide key={index} style={{ width: "100%", height: "100%", marginRight: "10px" }}>
+            <div
+              className='relative w-full h-full overflow-hidden cursor-pointer'
+              style={{ background: `url(${listing.imgUrls[index]}) center no-repeat`, backgroundSize: "cover" }}
+              onClick={() => openModal(listing.imgUrls[index])}
+            />
+          </SwiperSlide>
         ))}
-
       </Swiper>
+      {modalImage && (
+        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-75 z-50">
+          <div className="relative">
+            <button onClick={closeModal} className="absolute top-2 right-2 text-white text-xl focus:outline-none">&times;</button>
+            <img src={modalImage} alt="Modal" className="mx-auto max-w-full max-h-full" />
+          </div>
+        </div>
+      )}
+
+
       <div className='fixed top-[13%] right-[3%] z-10 bg-white cursor-pointer border-2 border-gray-400 rounded-full w-12 h-12 justify-center flex items-center' 
        onClick={() => {
                     navigator.clipboard.writeText(window.location.href) // copy link of current root
